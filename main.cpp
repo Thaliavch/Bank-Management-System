@@ -152,7 +152,18 @@ public:
         else
             cout << "Not valid" << endl;
     }
-
+    void DepositFunds(int n){ //deposits an amount "n" into account. 
+        deposit+=n;
+    }
+    void WithdrawFunds(int n){ //withdraws an amount "n" from account. 
+        deposit-=n;
+    }
+    int returnDep(){ //returns new balance after deposit. 
+        return deposit; 
+    }
+    int returnWith(){//returns new balace after withdraw. 
+        return deposit; 
+    }
 };
 
 int main() {
@@ -209,11 +220,19 @@ int main() {
 
         case DepositFunds:
             system("CLS");
+                cout<<"enter amount you want to deposit into the account"; 
+                cin>>n; 
+                account.DepositFunds(int n)<<endl;
+                cout<<"your new balance is"<<account.returnDep();
 
             break;
 
         case WithdrawFunds:
             system("CLS");
+                cout<<"enter amount you want to withdraw from the account";
+                cin>>n; 
+                account.WithdrawFunds(int n)<<endl;
+                cout<<"your new balace is"<<account.returnWith();
 
             break;
         case CloseAccount:
