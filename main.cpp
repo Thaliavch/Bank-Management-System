@@ -7,6 +7,7 @@ using namespace std;
 
 const int MIN_PASSWORD = 8;
 const int MIN_USERNAME = 8;
+const int MAX_PASSWORD_VERIFICATION_ATTEMPTS = 8; // constant used for verifications like to check password
 const int MAX_NUMBER_OF_ATTEMPTS = 5;
 const long long int FIRST_ACCOUNT_NUMBER = 10000;
 
@@ -153,6 +154,43 @@ public:
         else
             cout << "Not valid" << endl;
     }
+
+    
+    // Function for displaying user's information.
+    void displayInfo(){
+        string psw;
+        string usn;
+        cout << "Enter account username: ";
+        cin >> usn;
+
+        // Now we need to access his/her account information. I'll be able to do so once
+        // we set a way to store users' information on the createAccount method.
+        // Then I need ot write a check in case the username is wrong ( it is not registered so
+        // an account with that username does not exist
+
+        cout << "Enter password: ";
+        cin >> psw;
+
+        for(int i = 1; i < (MAX_PASSWORD_VERIFICATION_ATTEMPTS + 1); i++) // We have to go to the users file to retrieve his/her password and compare it to the user's input
+        {                          // I am using the for loop to give him 8 attempts to enter the correct password.
+
+            if(psw == password){
+                cout << "Display user's information." << endl;
+                break;
+            }else{
+                if(i == MAX_PASSWORD_VERIFICATION_ATTEMPTS){
+                    cout << "This was your last try. This account will be temporary restricted.";
+                }else {
+                    cout << "Wrong password. You have " << MAX_PASSWORD_VERIFICATION_ATTEMPTS - i
+                         << " attempts left. Please try again: ";
+                    cin >> psw;
+                }
+
+            }
+        }
+    }// end of displayInfo()
+
+
     void DepositFunds(double n){ //deposits an amount "n" into account.
         checking+=n;
     }
@@ -214,7 +252,7 @@ int main() {
 
             case AccountInformation:
                 system("CLS");
-
+                account.displayInfo();
 
                 break;
 
@@ -255,4 +293,3 @@ int main() {
     return 0;
 
 }
-
