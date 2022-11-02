@@ -53,13 +53,14 @@ public:
         cout << "\n\n\t\t\t\t\t8. EXIT FROM PROGRAM";
         cout << "\n\n\t\t\t\t\tOPTION: ";
     }
-}; 
+};
 
 class Bank {
 
 private: // private variables for an account
     string username;
     string password;
+    double checking;
 
 public:
 
@@ -84,7 +85,7 @@ public:
             cout << "Enter your new USERNAME:";
             cin >> username;
 
-      
+
 
             if (username.length() < MIN_USERNAME) { // User does not enter valid username lenght for username
                 cout << username << " only has " << username.length() << " letters. The minium required is " << MIN_USERNAME << endl;
@@ -116,7 +117,7 @@ public:
                 cout << password << "only has " << password.length() << " letters. The minimum required is " << MIN_PASSWORD << endl;
 
             else { // User enters a valid password
-                cout << "\t\t\t\t\t"; 
+                cout << "\t\t\t\t\t";
                 cout << "Your new PASSWORD will be: " << password << endl;
                 this->password = password;
             }
@@ -152,18 +153,16 @@ public:
         else
             cout << "Not valid" << endl;
     }
-    void DepositFunds(int n){ //deposits an amount "n" into account. 
-        deposit+=n;
+    void DepositFunds(double n){ //deposits an amount "n" into account.
+        checking+=n;
     }
-    void WithdrawFunds(int n){ //withdraws an amount "n" from account. 
-        deposit-=n;
+    void WithdrawFunds(double n){ //withdraws an amount "n" from account.
+        checking-=n;
     }
-    int returnDep(){ //returns new balance after deposit. 
-        return deposit; 
+    int returnBalance(){ //returns new balance after deposit.
+        return checking;
     }
-    int returnWith(){//returns new balace after withdraw. 
-        return deposit; 
-    }
+
 };
 
 int main() {
@@ -178,6 +177,7 @@ int main() {
     // Options
 
     int userInput;
+    double userMoney;
 
     do {
 
@@ -190,63 +190,63 @@ int main() {
 
         switch (userInput) {
 
-        case CreateAccount:
-            system("CLS");
+            case CreateAccount:
+                system("CLS");
 
-            account.PrintCreateAccountMenu();
-            account.GetAndSetValidUserName();
-            account.GetAndSetValidPassword();
+                account.PrintCreateAccountMenu();
+                account.GetAndSetValidUserName();
+                account.GetAndSetValidPassword();
 
-            break;
+                break;
 
-        case EditAccount:
-            system("CLS");
+            case EditAccount:
+                system("CLS");
 
-            account.EditAnAccount();
-            Sleep(1000); // Sleep the program for the user to see
+                account.EditAnAccount();
+                Sleep(1000); // Sleep the program for the user to see
 
-            break;
+                break;
 
-        case CheckBalance:
-            system("CLS");
+            case CheckBalance:
+                system("CLS");
 
-            break;
+                break;
 
-        case AccountInformation:
-            system("CLS");
+            case AccountInformation:
+                system("CLS");
 
 
-            break;
+                break;
 
-        case DepositFunds:
-            system("CLS");
-                cout<<"enter amount you want to deposit into the account"; 
-                cin>>n; 
-                account.DepositFunds(int n)<<endl;
-                cout<<"your new balance is"<<account.returnDep();
+            case DepositFunds:
+                system("CLS");
+                cout<<"enter amount you want to deposit into the account";
+                cin>>userMoney;
+                account.DepositFunds( userMoney);
+                cout<<"your new balance is"<< account.returnBalance();
 
-            break;
+                break;
 
-        case WithdrawFunds:
-            system("CLS");
+            case WithdrawFunds:
+                system("CLS");
                 cout<<"enter amount you want to withdraw from the account";
-                cin>>n; 
-                account.WithdrawFunds(int n)<<endl;
-                cout<<"your new balace is"<<account.returnWith();
+                cin>> userMoney;
+                account.WithdrawFunds(userMoney);
+                cout<<"your new balance is"<< account.returnBalance();
 
-            break;
-        case CloseAccount:
-            system("CLS");
-           
-            break;
+                break;
+            case CloseAccount:
+                system("CLS");
 
-        case ExitProgram:
-            cout << "Thank you for using our Bank Management System." << endl;
-             break;
+                break;
 
-        default:
-            cout << "Incorrect input. Try again." << endl;
-            break;
+            case ExitProgram:
+                cout << "Thank you for using our Bank Management System." << endl;
+                break;
+
+            default:
+                cout << "Incorrect input. Try again." << endl;
+                break;
         };
 
     }while (userInput != 8);
@@ -255,3 +255,4 @@ int main() {
     return 0;
 
 }
+
