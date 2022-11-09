@@ -5,11 +5,11 @@ using namespace std;
 
 // Constants declaration
 
-const int MIN_PASSWORD = 8;
-const int MIN_USERNAME = 8;
+const int MIN_PASSWORD_LENGTH = 8;
+const int MIN_USERNAME_LENGTH = 8;
 const int MAX_PASSWORD_VERIFICATION_ATTEMPTS = 8; // constant used for verifications like to check password
 const int MAX_NUMBER_OF_ATTEMPTS = 5;
-const long long int FIRST_ACCOUNT_NUMBER = 10000;
+long long int ACCOUNT_NUMBER = 10000;
 
 
 // enums for user inputs, used later in the switch statements.
@@ -26,7 +26,7 @@ enum UserInput {
 };
 
 // Starting of project
-class Menu{
+class Menu {
 public:
     void DisplayOptions() {
 
@@ -64,6 +64,11 @@ private: // private variables for an account
     double checking;
 
 public:
+    bool UsernameCreated = false;
+    bool PasswordCreated = false;
+
+    string new_user_name;
+    string new_password;
 
     void PrintCreateAccountMenu() {
         cout << "*********************************************";
@@ -75,58 +80,65 @@ public:
 
 
     // Ger a valid username method
-    void GetAndSetValidUserName() {
-
-        //cout << "\t\t\t\t\t\t\tCREATE AN ACCOUNT" << endl
-        string username;
-
+    void CreateAndSetValidUsername() {
         do {
             cout << "\t\t\t\t\t"; // Centering the text prompoted
 
             cout << "Enter your new USERNAME:";
-            cin >> username;
+            cin >> new_user_name;
 
-
-
-            if (username.length() < MIN_USERNAME) { // User does not enter valid username lenght for username
-                cout << username << " only has " << username.length() << " letters. The minium required is " << MIN_USERNAME << endl;
+            if (new_user_name.length() < MIN_USERNAME_LENGTH) { // User does not enter valid username length for username
+                cout << "\t\t\t\t";
+                cout << new_user_name << " only has " << new_user_name.length() << " letters. The minium required is " << MIN_USERNAME_LENGTH << endl;
             }
 
             else { // User enters a valid username
                 cout << "\t\t\t\t\t";
-                cout << "Your new USERNAME will be: " << username << endl;
-                this->username = username;
+                cout << "Your new USERNAME will be: " << new_user_name << endl;
+                this->username = new_user_name;
+                UsernameCreated = true;
             }
 
-        } while (username.length() < MIN_USERNAME);
+        } while (new_user_name.length() < MIN_USERNAME_LENGTH);
 
     }
-
 
 
     //Get and set a valid password method
 
-    void GetAndSetValidPassword() {
-        string password;
+    void CreateAndSetValidPassword() {
         do {
             cout << "\t\t\t\t\t"; // Centering the text prompted
 
             cout << "Enter your new PASSWORD:";
-            cin >> password;
+            cin >> new_password;
 
-            if (password.length() < MIN_PASSWORD) // User does not enter valid username for password
-                cout << password << "only has " << password.length() << " letters. The minimum required is " << MIN_PASSWORD << endl;
+            if (new_password.length() < MIN_PASSWORD_LENGTH) { // User does not enter valid username for password
+                cout << "\t\t\t\t\t";
+                cout << new_password << "only has " << new_password.length() << " letters. The minimum required is " << MIN_PASSWORD_LENGTH << endl;
+            }
 
             else { // User enters a valid password
                 cout << "\t\t\t\t\t";
-                cout << "Your new PASSWORD will be: " << password << endl;
-                this->password = password;
+                cout << "Your new PASSWORD will be: " << new_password << endl;
+                this->password = new_password;
+                PasswordCreated = true;
             }
-
-        } while (password.length() < MIN_PASSWORD);
-
+        } while (new_password.length() < MIN_PASSWORD_LENGTH);
     }
 
+    void DisplayAccountNumber() {cout << "Your ACCOUNT NUMBER IS: " << ACCOUNT_NUMBER << endl;}
+
+    void UpdateAccountNumber() { ACCOUNT_NUMBER++; }
+
+    bool AccountExists() {
+        bool AccountExists = false;
+        if (UsernameCreated && PasswordCreated) // User needs a username a passwoerd to have a account in place
+            AccountExists = true;
+        return AccountExists;
+           
+    }
+  
 
     // Edit an account
 
@@ -135,8 +147,10 @@ public:
 
         string password_to_verify;
         string username_to_verify;
+        string option_to_change;
 
         // Getting the previous account info from the user (Username and password)
+
         cout << "Enter your previous password: ";
         cin >> username_to_verify;
 
@@ -144,20 +158,33 @@ public:
         cin >> password_to_verify;
 
 
-        if (password_to_verify == password) // If the password the user gives is the same as stored in the system
-            cout << "Success" << endl;
-        else
-            cout << "Not valid" << endl;//placeholder
+        if (password_to_verify == password && username_to_verify == username) {// If the password the user gives is the same as stored in the system
 
-        if (username_to_verify == username) // If the username the user gives is the same as stored in the system
-            cout << "Sucesss" << endl;
+            cout << "Success!" << endl;
+
+            cout << "What would you like to change?" << endl;
+            cout << "Type PASSWORD for password. Type USERNAME for username. Type BOTH for username and password" << endl;
+
+            cin >> option_to_change; 
+
+            if (option_to_change == "PASSWORD")
+                CreateAndSetValidPassword();
+            else if (option_to_change == "USERNAME")
+                CreateAndSetValidUsername();
+            else if (option_to_change == "BOTH") {
+                CreateAndSetValidPassword();
+                CreateAndSetValidUsername();
+            }
+        }
+
         else
-            cout << "Not valid" << endl;
+            cout << "Not valid. Try again." << endl;//placeholder
+
     }
 
-    
+
     // Function for displaying user's information.
-    void displayInfo(){
+    void displayInfo() {
         string psw;
         string usn;
         cout << "Enter account username: ";
@@ -171,18 +198,20 @@ public:
         cout << "Enter password: ";
         cin >> psw;
 
-        for(int i = 1; i < (MAX_PASSWORD_VERIFICATION_ATTEMPTS + 1); i++) // We have to go to the users file to retrieve his/her password and compare it to the user's input
+        for (int i = 1; i < (MAX_PASSWORD_VERIFICATION_ATTEMPTS + 1); i++) // We have to go to the users file to retrieve his/her password and compare it to the user's input
         {                          // I am using the for loop to give him 8 attempts to enter the correct password.
 
-            if(psw == password){
+            if (psw == password) {
                 cout << "Display user's information." << endl;
                 break;
-            }else{
-                if(i == MAX_PASSWORD_VERIFICATION_ATTEMPTS){
+            }
+            else {
+                if (i == MAX_PASSWORD_VERIFICATION_ATTEMPTS) {
                     cout << "This was your last try. This account will be temporary restricted.";
-                }else {
+                }
+                else {
                     cout << "Wrong password. You have " << MAX_PASSWORD_VERIFICATION_ATTEMPTS - i
-                         << " attempts left. Please try again: ";
+                        << " attempts left. Please try again: ";
                     cin >> psw;
                 }
 
@@ -190,14 +219,14 @@ public:
         }
     }// end of displayInfo()
 
-
-    void DepositFunds(double n){ //deposits an amount "n" into account.
-        checking+=n;
+    
+    void SetAndDepositFunds(double n) { //deposits an amount "n" into account.
+        checking += n;
     }
-    void WithdrawFunds(double n){ //withdraws an amount "n" from account.
-        checking-=n;
+    void SetAndWithdrawFunds(double n) { //withdraws an amount "n" from account.
+        checking -= n;
     }
-    int returnBalance(){ //returns new balance after deposit.
+    int GetBalance() { //returns new balance after deposit.
         return checking;
     }
 
@@ -228,66 +257,70 @@ int main() {
 
         switch (userInput) {
 
-            case CreateAccount:
-                system("CLS");
+        case CreateAccount:
+            system("CLS");
 
-                account.PrintCreateAccountMenu();
-                account.GetAndSetValidUserName();
-                account.GetAndSetValidPassword();
+            account.PrintCreateAccountMenu();
+            account.CreateAndSetValidPassword();
+            account.CreateAndSetValidUsername();
 
-                break;
+            break;
 
-            case EditAccount:
-                system("CLS");
-
+        case EditAccount:
+            system("CLS");
+            if (account.AccountExists())
                 account.EditAnAccount();
-                Sleep(1000); // Sleep the program for the user to see
+            else {
+                cout << "\t\t\t\t";
+                cout << "You do not have an account yet. You will be redirected." << endl;
+            }
+            Sleep(1000); // Sleep the program for the user to see
 
-                break;
+            break;
 
-            case CheckBalance:
-                system("CLS");
+        case CheckBalance:
+            system("CLS");
 
-                break;
+            break;
 
-            case AccountInformation:
-                system("CLS");
-                account.displayInfo();
+        case AccountInformation:
+            system("CLS");
+            account.displayInfo();
 
-                break;
+            break;
 
-            case DepositFunds:
-                system("CLS");
-                cout<<"enter amount you want to deposit into the account";
-                cin>>userMoney;
-                account.DepositFunds( userMoney);
-                cout<<"your new balance is"<< account.returnBalance();
+        case DepositFunds:
+            system("CLS");
+            cout << "enter amount you want to deposit into the account";
+            cin >> userMoney;
+            account.SetAndDepositFunds(userMoney);
+            cout << "your new balance is" << account.GetBalance();
 
-                break;
+            break;
 
-            case WithdrawFunds:
-                system("CLS");
-                cout<<"enter amount you want to withdraw from the account";
-                cin>> userMoney;
-                account.WithdrawFunds(userMoney);
-                cout<<"your new balance is"<< account.returnBalance();
+        case WithdrawFunds:
+            system("CLS");
+            cout << "Enter amount you want to withdraw from the account";
+            cin >> userMoney;
+            account.SetAndWithdrawFunds(userMoney);
+            cout << "your new balance is" << account.GetBalance();
 
-                break;
-            case CloseAccount:
-                system("CLS");
+            break;
+        case CloseAccount:
+            system("CLS");
 
-                break;
+            break;
 
-            case ExitProgram:
-                cout << "Thank you for using our Bank Management System." << endl;
-                break;
+        case ExitProgram:
+            cout << "Thank you for using our Bank Management System." << endl;
+            break;
 
-            default:
-                cout << "Incorrect input. Try again." << endl;
-                break;
+        default:
+            cout << "Incorrect input. Try again." << endl;
+            break;
         };
 
-    }while (userInput != 8);
+    } while (userInput != 8);
 
 
     return 0;
