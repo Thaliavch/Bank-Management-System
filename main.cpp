@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <windows.h>
 
 using namespace std;
@@ -9,7 +10,10 @@ const int MIN_PASSWORD_LENGTH = 8;
 const int MIN_USERNAME_LENGTH = 8;
 const int MAX_PASSWORD_VERIFICATION_ATTEMPTS = 8; // constant used for verifications like to check password
 const int MAX_NUMBER_OF_ATTEMPTS = 5;
+const int SLEEP = 1500;
 long long int ACCOUNT_NUMBER = 10000;
+
+
 
 
 // enums for user inputs, used later in the switch statements.
@@ -70,6 +74,8 @@ public:
     string new_user_name;
     string new_password;
 
+    ofstream AccountFile;
+
     void PrintCreateAccountMenu() {
         cout << "*********************************************";
         cout << "   CREATE AN ACCOUNT   ";
@@ -79,7 +85,7 @@ public:
     }
 
 
-    // Ger a valid username method
+    // Get a valid username method
     void CreateAndSetValidUsername() {
         do {
             cout << "\t\t\t\t\t"; // Centering the text prompoted
@@ -103,7 +109,19 @@ public:
 
     }
 
+    void WriteAccountToDatabase() {
 
+        AccountFile.open("AccountInfo.txt", ios::app); // Append account info to the file "AccountInfo.txt"
+
+        if (AccountFile.is_open()) { // If the file is open
+            AccountFile << password;  // Write the password to the file
+            AccountFile << username;  // Write the username to the file
+            AccountFile.close();
+        }
+    }
+
+
+  
     //Get and set a valid password method
 
     void CreateAndSetValidPassword() {
@@ -127,16 +145,20 @@ public:
         } while (new_password.length() < MIN_PASSWORD_LENGTH);
     }
 
-    void DisplayAccountNumber() {cout << "Your ACCOUNT NUMBER IS: " << ACCOUNT_NUMBER << endl;}
+    void DisplayAccountNumber() {
+        cout << "\t\t\t\t\t";
+        cout << "Your ACCOUNT NUMBER IS: " << ACCOUNT_NUMBER << endl;
+    }
 
     void UpdateAccountNumber() { ACCOUNT_NUMBER++; }
 
     bool AccountExists() {
         bool AccountExists = false;
-        if (UsernameCreated && PasswordCreated) // User needs a username a passwoerd to have a account in place
+
+        if (UsernameCreated && PasswordCreated)
             AccountExists = true;
-        return AccountExists;
-           
+
+        return AccountExists;   
     }
   
 
@@ -169,8 +191,10 @@ public:
 
             if (option_to_change == "PASSWORD")
                 CreateAndSetValidPassword();
+
             else if (option_to_change == "USERNAME")
                 CreateAndSetValidUsername();
+
             else if (option_to_change == "BOTH") {
                 CreateAndSetValidPassword();
                 CreateAndSetValidUsername();
@@ -259,10 +283,19 @@ int main() {
 
         case CreateAccount:
             system("CLS");
-
+           
             account.PrintCreateAccountMenu();
+
+            // Getting and displaying important Info to the user
             account.CreateAndSetValidPassword();
             account.CreateAndSetValidUsername();
+            account.DisplayAccountNumber();
+
+            // Storing and updating the info
+            account.UpdateAccountNumber();
+            account.WriteAccountToDatabase();
+
+            Sleep(1500);
 
             break;
 
@@ -274,7 +307,7 @@ int main() {
                 cout << "\t\t\t\t";
                 cout << "You do not have an account yet. You will be redirected." << endl;
             }
-            Sleep(1000); // Sleep the program for the user to see
+            Sleep(1500); // Sleep the program for the user to see
 
             break;
 
