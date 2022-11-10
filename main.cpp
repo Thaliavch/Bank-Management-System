@@ -164,6 +164,11 @@ public:
 
     // Edit an account
 
+    void PrintEditAccountMenu() {
+
+        cout << "***********************************************************EDIT ACCOUNT**************************************************" << endl;
+    }
+
     void EditAnAccount() {
         //Components needed to verify an account
 
@@ -171,38 +176,46 @@ public:
         string username_to_verify;
         string option_to_change;
 
+        int numberofattempts = 0;
+
         // Getting the previous account info from the user (Username and password)
 
-        cout << "Enter your previous password: ";
-        cin >> username_to_verify;
+        do {
+            cout << "Enter your previous password: ";
+            cin >> username_to_verify;
 
-        cout << "Enter your previous username: ";
-        cin >> password_to_verify;
+            cout << "Enter your previous username: ";
+            cin >> password_to_verify;
 
+            if (password_to_verify == password && username_to_verify == username) { // If the password the user gives is the same as stored in the system
+                cout << "Success!" << endl;
+                cout << "What would you like to change?" << endl;
+               
+                cout << "Type PASSWORD for password. Type USERNAME for username. Type BOTH for username and password" << endl;
 
-        if (password_to_verify == password && username_to_verify == username) {// If the password the user gives is the same as stored in the system
+                cin >> option_to_change;
 
-            cout << "Success!" << endl;
+                if (option_to_change == "PASSWORD")
+                    CreateAndSetValidPassword();
 
-            cout << "What would you like to change?" << endl;
-            cout << "Type PASSWORD for password. Type USERNAME for username. Type BOTH for username and password" << endl;
+                else if (option_to_change == "USERNAME")
+                    CreateAndSetValidUsername();
 
-            cin >> option_to_change; 
-
-            if (option_to_change == "PASSWORD")
-                CreateAndSetValidPassword();
-
-            else if (option_to_change == "USERNAME")
-                CreateAndSetValidUsername();
-
-            else if (option_to_change == "BOTH") {
-                CreateAndSetValidPassword();
-                CreateAndSetValidUsername();
+                else if (option_to_change == "BOTH") {
+                    CreateAndSetValidPassword();
+                    CreateAndSetValidUsername();
+                }
             }
-        }
 
-        else
-            cout << "Not valid. Try again." << endl;//placeholder
+            else
+                cout << "Not valid. Try again." << endl;
+
+            numberofattempts++;
+
+            if (numberofattempts == MAX_NUMBER_OF_ATTEMPTS)
+                cout << "MAX number of attempts used. You will be redirected to the home screen." << endl;
+
+        } while (!(password_to_verify == password && username_to_verify == username) && (numberofattempts != MAX_NUMBER_OF_ATTEMPTS));
 
     }
 
@@ -301,8 +314,10 @@ int main() {
 
         case EditAccount:
             system("CLS");
-            if (account.AccountExists())
+            if (account.AccountExists()) {
+                account.PrintEditAccountMenu();
                 account.EditAnAccount();
+            }
             else {
                 cout << "\t\t\t\t";
                 cout << "You do not have an account yet. You will be redirected." << endl;
