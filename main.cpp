@@ -56,7 +56,7 @@ public:
         userInfo info; // Creating a vector of structure UserInfo called info for stroiing every accounts information
 
         // store the users account number
-        info.account_number = FIRST_ACCOUNT_NUMBER + account_index; 
+        info.account_number = FIRST_ACCOUNT_NUMBER + account_index;
         account_index++; // update the account index for the next account number
 
         // Ask the user for their name and valid password
@@ -68,7 +68,7 @@ public:
 
         cout << "Please enter a password of at least 8 digits: ";
         cin >> psw;
-        while (psw.length() < MIN_PASSWORD_LENGTH|| psw.length() > MAX_PASSWORD_LENGTH ) {
+        while (psw.length() < MIN_PASSWORD_LENGTH || psw.length() > MAX_PASSWORD_LENGTH) {
             cout << "The password must have at least 8 digits and no more than 50 digits \n Please try again: ";
             cin >> psw;
         }
@@ -101,7 +101,7 @@ public:
         cout << "\nPlease enter your account number: ";
         cin >> accNum;
 
-        
+
         do {
             for (int i = 0; i < account_index; i++) { // Iterate over all the account indexes
                 if (accNum == usersList[i].account_number) { // If the accoutn num if found in the account number stored fro that partiuclar element
@@ -130,18 +130,20 @@ public:
         for (int i = 1; i < (MAX_PASSWORD_VERIFICATION_ATTEMPTS + 1); i++) // We have to go to the users file to retrieve his/her password and compare it to the user's input
         {                          // I am using the for loop to give him 8 attempts to enter the correct password.
 
-            if (psw != usersList[user_index].password) {
-                if (i == MAX_PASSWORD_VERIFICATION_ATTEMPTS) {
+            if (psw != usersList[user_index].password) { // If the password is not found in the array user_index.password
+
+                if (i == MAX_PASSWORD_VERIFICATION_ATTEMPTS) { // If the user has used up all their attmepts to enter their password
                     cout << "This was your last try. This account will be temporary restricted.";
                     access_granted = false;
                 }
-                else { // The password is not found in our array of structures
+
+                else { // The password is not found in our array of structures, but the user still has some attempts left
                     cout << "Wrong password. You have " << MAX_PASSWORD_VERIFICATION_ATTEMPTS - i
                         << " attempts left. Please try again: ";
                     cin >> psw;
                 }
             }
-            else {
+            else { // The user provides a correct password (We give them access to their account)
                 access_granted = true;
                 break;
             }
@@ -316,10 +318,10 @@ public:
 int NewAccount::account_index = 0; // Initalize the account_index to 0 at the start of the program
 
 int main() {
-    
+
     int userInput; // For the user to input the option they want to choose
 
-    NewAccount user; 
+    NewAccount user;
 
     // Main Title of the program and greeting
     cout << "*********************************************";
