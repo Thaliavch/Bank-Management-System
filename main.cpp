@@ -583,7 +583,8 @@ int main() {
         // Display the main menu to the user
         user.DisplayMainMenu();
 
-        cin >> userInput;
+        // Getting a valid number from the user
+        userInput = user.GetValidInput();
 
         switch (userInput) {
 
@@ -677,9 +678,13 @@ int main() {
             cout << "\t\t\t\t\tThank you for using our Bank Management System.";
       
             break;
-        default:
-            cout << "\t\t\t\t\tIncorrect input. Try again.";
 
+        default: // Enter a number outside the range of options
+            system("CLS");
+            cout << "Incorrect input. Try again.";
+            
+            Sleep(SLEEPTIME);
+            system("CLS");
         };
 
     } while (userInput != 8);
