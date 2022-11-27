@@ -1,7 +1,7 @@
 /* --------------------------------------------------------
  *    File: defs.h
  *  Author: Thalia Valle Chavez | David Bentazos | Sahbah Gonzales
- *   Class: COP 3003, CRN: 13969
+ *   Class: COP 3003, CRN: 85147
  * Purpose: Bank Management System elements' definitions.
  * -------------------------------------------------------- */
 #ifndef MAIN_CPP_DEFS_H
