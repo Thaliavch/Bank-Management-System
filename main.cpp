@@ -1,10 +1,21 @@
+/**
+ *  Project Name: BanK Management System
+ *  File: main.cpp
+ *  Authors: Thalia Valle Chavez | David Bentazos | Shabah Gonzales
+ *  Class: COP 3003, CRN: 85147
+ *  Purpose: Creation and Management of Costumers Bank Accounts.
+ */
 #include <iostream>
 #include <vector>
 #include <string>
+#include <stdlib.h>
+#include <unistd.h>
 #include "defs.h"
 using namespace std;
 
-// Classes declaration start here
+//--------------------------------------------------------
+// Class declarations start here
+//--------------------------------------------------------
 class Menu{
 public:
     Menu(){
@@ -16,15 +27,25 @@ public:
 };// end of Menu Class
 
 
+//-------------------------------
 class NewAccount: public Menu{
     static int account_index;
 
+protected:
     string psw;
     int user_index;
     int accNum;
     int input;
     bool access_granted;
     bool acc_found;
+
+    //Pointer to variables above;
+    string* psw_ptr = &psw;
+    int* user_index_ptr = &user_index;
+    int* accNum_ptr = &accNum;
+    int* input_ptr = &input;
+    bool* access_granted_ptr = &access_granted;
+    bool* acc_found_ptr = &acc_found;
 
     struct userInfo{
         string holder_name;
@@ -39,29 +60,47 @@ class NewAccount: public Menu{
 public:
     void CreateAccount();
     void AccountAccess();
+    
+}; // End of NewAccount
+
+
+//-------------------------------
+class Account: public NewAccount{
+    
+public:
     void EditAccount();
     void CheckBalance();
     void DisplayInformation();
     void DepositFunds();
     void WithdrawFunds();
     void CloseAccount();
-}; // End of NewAccount class
+}; // End of Account class
+//--------------------------------------------------------
+// End of class declarations
+//--------------------------------------------------------
 int NewAccount::account_index = 0; // initialization of static variable account_index;
 
 
+/**
+ * The main function
+ * @return OS status message (0=Success)
+ */
 int main() {
     int userInput;
-    NewAccount user;
+    Account user;
 
     do{
+        
         user.DisplayMenu();
         cin >> userInput;
+        system("clear");
 
         switch(userInput){
 
             case CreateAccount:
                 user.CreateAccount();
-
+                sleep(SLEEP_TIME);
+                
                 break;
             case EditAccount:
                 user.EditAccount();
@@ -88,19 +127,30 @@ int main() {
 
                 break;
             case ExitProgram:
-                cout << "Thank you for using our Bank Management System.";
+                cout << "Thank You for Using our Bank Management System.";
+                
                 break;
             default:
-                cout << "Incorrect input. Try again.";
+                cout << "Incorrect Input. Try Again.";
+                
 
         };
+        sleep(SLEEP_TIME);
+        system("clear");
 
     }while(userInput != 8);
 
 
     return 0;
-}
+}// end of main
 
+
+//----------------------------------------------------------
+// Method definitions start here
+//----------------------------------------------------------
+/**
+ * 
+ **/
 void Menu::DisplayMenu(){
     cout << "\n\nPlease select an option below:";
     cout << "\n\n1. CREATE NEW ACCOUNT";
@@ -115,25 +165,34 @@ void Menu::DisplayMenu(){
 }
 
 
+/**
+ * Create user account and store user information in a the vector usersList of type userInfo.
+ * Check for password requirements.
+ * Assign account number to user.
+ * @param: None
+ * @return: Void
+ */
  void NewAccount::CreateAccount(){
+
     userInfo info; // struct declaration
     info.account_number = FIRST_ACCOUNT_NUMBER + account_index;
     account_index++;
 
-
-    cout<< "Please enter the costumer's first name:       ";
+    cout<< "First name:       ";
     cin >>  info.holder_name;
 
-    cout<< "Please enter the costumer's last name:        ";
+    cout<< "Last name:        ";
     cin >>  info.holder_last_name;
 
+    // Setting password____________________________________________
     cout << "Please enter a password of at least 8 digits: ";
-    cin >> psw;
-    while(psw.length() < MIN_PASSWORD || psw.length() > MAX_PASSWORD ){
-        cout << "The password must have at least 8 digits and no more than 50 digits \n Please try again: ";
-        cin >> psw;
+    cin >> *psw_ptr;
+    while(psw_ptr->length() < MIN_PASSWORD || psw_ptr->length() > MAX_PASSWORD ){
+        cout << "The password must have at least 8 digits and no more than 50 digits \nTry again: ";
+        cin >> *psw_ptr;
     }
-    info.password = psw;
+    info.password = *psw_ptr;
+    // End of password setting_____________________________________
 
     cout << "Amount to deposit in checking account:        ";
     cin >> info.checking_funds;
@@ -150,183 +209,192 @@ void Menu::DisplayMenu(){
 
 }
 
+
+/**
+ * 
+ * 
+ * */
 void NewAccount::AccountAccess(){
-    cout << "\nPlease enter your account number: ";
-    cin >> accNum;
+
+     // Checking for valid account number
+    cout << "\nAccount Number: ";
+    cin >> *accNum_ptr;
 
     do{
         for (int i = 0; i < account_index; i++) {
-            if (accNum == usersList[i].account_number) {
-                user_index = i;
-                acc_found = true;
+            if (*accNum_ptr == usersList[i].account_number) {
+                *user_index_ptr = i;
+                *acc_found_ptr = true;
             }else{
-                acc_found = false;
+                *acc_found_ptr = false;
             }
-        }if(!acc_found) {
-            cout << "\nAccount not found. Please try again";
-            cout << "\nAccount number: ";
-            cin >> accNum;
+        }if(!(*acc_found_ptr)) {
+            cout << "\nAccount Not Found. Try Again";
+            cout << "\nAccount Number: ";
+            cin >> *accNum_ptr;
         }
 
-    }while(!acc_found);
+    }while(!*acc_found_ptr);
+    // End of checking account number
 
-
-
-    cout << "\nEnter password: ";
-    cin >> psw;
+    // Password Checking
+    cout << "\nEnter Password: ";
+    cin >> *psw_ptr;
 
     for (int i = 1; i < (MAX_PASSWORD_VERIFICATION_ATTEMPTS + 1); i++) // We have to go to the users file to retrieve his/her password and compare it to the user's input
     {                          // I am using the for loop to give him 8 attempts to enter the correct password.
 
-        if (psw != usersList[user_index].password) {
+        if (*psw_ptr != usersList[*user_index_ptr].password) {
             if (i == MAX_PASSWORD_VERIFICATION_ATTEMPTS) {
-                cout << "This was your last try. This account will be temporary restricted.";
-                access_granted = false;
+                cout << "\nThis was your last attempt. This account will be temporary restricted. Try again later.";
+                *access_granted_ptr = false;
             } else {
-                cout << "Wrong password. You have " << MAX_PASSWORD_VERIFICATION_ATTEMPTS - i
-                     << " attempts left. Please try again: ";
-                cin >> psw;
+                cout << "\nWrong password. You have " << MAX_PASSWORD_VERIFICATION_ATTEMPTS - i << " attempts left. ";
+                cout << "\nTry again: ";
+                cin >> *psw_ptr;
             }
         }else{
-            access_granted = true;
+            *access_granted_ptr = true;
             break;
         }
     }
 
 };
+ 
 
-void NewAccount::EditAccount(){
+
+void Account::EditAccount(){
 
     AccountAccess();
-    if(access_granted){
+    if(*access_granted_ptr){
         do{
             cout << "\nPlease select an option below";
-            cout << "\n\n1. ACCOUNT NUMBER";
-            cout << "\n\n2. PASSWORD";
-            cout << "\n\n3. EXIT EDITOR";
-            cout << "\n\nOPTION: \n";
+            cout << "\n\n1. HOLDER NAME";
+            cout << "\n\n2. HOLDER LAST NAME";
+            cout << "\n\n3. PASSWORD";
+            cout << "\n\n4. EXIT EDITOR";
+            cout << "\n\nOPTION: ";
+            cin >> *input_ptr;
 
-            cin >> input;
-
-            switch(input){
-
+            switch(*input_ptr){
                 case 1:
-                    cout << "\nEnter new account number: "; // add check to avoid repetition of account numbers later
-                    cin >> usersList[user_index].account_number;
+                    cout << "\nEnter New Name: "; // add check to avoid repetition of account numbers later
+                    cin >> usersList[*user_index_ptr].holder_name;
                     break;
                 case 2:
-                    cout << "\nEnter new password      : ";
-                    cin >> usersList[user_index].password;
+                    cout << "\nEnter New Last Name: "; // add check to avoid repetition of account numbers later
+                    cin >> usersList[*user_index_ptr].holder_last_name;
                     break;
                 case 3:
-                    cout << "\nExiting editor...\n";
+                    cout << "\nEnter New Password      : ";
+                    cin >> usersList[*user_index_ptr].password;
+                    break;
+                case 4:
+                    cout << "\nExiting Editor...\n";
                     break;
                 default:
-                    cout << "\nIncorrect input. Try again.\n";
+                    cout << "\nIncorrect Input. Try Again.\n";
 
             };
 
-        }while(input != 3);
+        }while(*input_ptr != 4);
     }
 }
 
 
 
-void NewAccount::CheckBalance(){
+void Account::CheckBalance(){
 
     AccountAccess();
-
-    if(access_granted) {
+    if(*access_granted_ptr) {
         cout << "\nPlease select an option below";
         cout << "\n\n1. CHECKING ACCOUNT";
         cout << "\n\n2. SAVINGS ACCOUNT";
-        cout << "\n\nOPTION: \n";
+        cout << "\n\nOPTION: ";
+        cin >> *input_ptr;
 
-        cin >> input;
-
-        switch (input) {
+        switch (*input_ptr) {
             case 1:
-                cout << "\nBalance: " << usersList[user_index].checking_funds;
+                cout << "\nBalance: " << usersList[*user_index_ptr].checking_funds;
                 break;
             case 2:
-                cout << "\nBalance: " << usersList[user_index].savings_funds;
+                cout << "\nBalance: " << usersList[*user_index_ptr].savings_funds;
                 break;
         }
     }
 
-
 }
 
-void NewAccount::DisplayInformation() {
-    AccountAccess();
 
-    if (access_granted) {
-        cout << user_index;
-        cout << "User:                     " << usersList[user_index].holder_name << usersList[user_index].holder_last_name << endl;
-        cout << "Account Number:           " << usersList[user_index].account_number << endl;
-        cout << "Savings Account Balance:  " << usersList[user_index].savings_funds << endl;
-        cout << "Checking Account Balance: " << usersList[user_index].checking_funds << endl;
+
+void Account::DisplayInformation() {
+
+    AccountAccess();
+    if (*access_granted_ptr) {
+        cout << "User:                     " << usersList[*user_index_ptr].holder_name << usersList[*user_index_ptr].holder_last_name << endl;
+        cout << "Account Number:           " << usersList[*user_index_ptr].account_number << endl;
+        cout << "Account Password:         " << usersList[*user_index_ptr].password << endl;
+        cout << "Savings Account Balance:  " << usersList[*user_index_ptr].savings_funds << endl;
+        cout << "Checking Account Balance: " << usersList[*user_index_ptr].checking_funds << endl;
 
     }
 }
 
-void NewAccount::DepositFunds(){
+
+
+void Account::DepositFunds(){
 
     AccountAccess();
-
-    if(access_granted) {
+    if(*access_granted_ptr) {
         cout << "\nPlease select in which account you want to deposit: ";
         cout << "\n\n1. CHECKING ACCOUNT";
         cout << "\n\n2. SAVINGS ACCOUNT";
-        cout << "\n\nOPTION: \n";
+        cout << "\n\nOPTION: ";
+        cin >> *input_ptr;
 
-        cin >> input;
-
-        switch (input) {
+        switch (*input_ptr) {
             case 1:
                 cout << "\nAmount: ";
-                cin >> input;
-                usersList[user_index].checking_funds += input;
-                cout << "\n**** Balance after deposit: " << usersList[user_index].checking_funds << " ****";
-
+                cin >> *input_ptr;
+                usersList[*user_index_ptr].checking_funds += *input_ptr;
+                cout << "\n**** New Balance: " << usersList[*user_index_ptr].checking_funds << " ****";
                 break;
             case 2:
                 cout << "\nAmount: ";
-                cin >> input;
-                usersList[user_index].savings_funds += input;
-                cout << "\n**** Balance after deposit: " << usersList[user_index].savings_funds << " ****";
-
+                cin >> *input_ptr;
+                usersList[*user_index_ptr].savings_funds += *input_ptr;
+                cout << "\n**** New Balance: " << usersList[*user_index_ptr].savings_funds << " ****";
                 break;
         }
     }
 
 }
 
-void NewAccount::WithdrawFunds(){
+
+
+void Account::WithdrawFunds(){
 
     AccountAccess();
-
-    if(access_granted) {
+    if(*access_granted_ptr) {
         cout << "\nPlease select in which account you want to withdraw: ";
         cout << "\n\n1. CHECKING ACCOUNT";
         cout << "\n\n2. SAVINGS ACCOUNT";
-        cout << "\n\nOPTION: \n";
+        cout << "\n\nOPTION: ";
+        cin >> *input_ptr;
 
-        cin >> input;
-
-        switch (input) {
+        switch (*input_ptr) {
             case 1:
                 cout << "\nAmount: ";
-                cin >> input;
-                usersList[user_index].checking_funds -= input;
-                cout << "\n**** Balance after withdraw: " << usersList[user_index].checking_funds << " ****";
+                cin >> *input_ptr;
+                usersList[*user_index_ptr].checking_funds -= *input_ptr;
+                cout << "\n**** New Balance: " << usersList[*user_index_ptr].checking_funds << " ****";
 
                 break;
             case 2:
                 cout << "\nAmount: ";
-                cin >> input;
-                usersList[user_index].savings_funds -= input;
-                cout << "\n**** Balance after withdraw: " << usersList[user_index].savings_funds << " ****";
+                cin >> *input_ptr;
+                usersList[*user_index_ptr].savings_funds -= *input_ptr;
+                cout << "\n**** New Balance: " << usersList[*user_index_ptr].savings_funds << " ****";
 
                 break;
         }
@@ -334,13 +402,14 @@ void NewAccount::WithdrawFunds(){
 
 }
 
-void NewAccount::CloseAccount(){
+
+
+void Account::CloseAccount(){
 
     AccountAccess();
-    if(access_granted){
+    if(*access_granted_ptr){
         vector<userInfo>::iterator position;
-        position = usersList.begin() + user_index;
-
+        position = usersList.begin() + *user_index_ptr;
         usersList.erase(position);
     }
 
