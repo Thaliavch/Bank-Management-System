@@ -5,6 +5,7 @@
  *  Class: COP 3003, CRN: 85147
  *  Purpose: Creation and Management of Costumers Bank Accounts.
  */
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -149,7 +150,9 @@ int main() {
 // Method definitions start here
 //----------------------------------------------------------
 /**
- * 
+ * Displays the options for the user to select from in the main menu
+ * @param: None
+ * @return: void
  **/
 void Menu::DisplayMenu(){
     cout << "\n\nPlease select an option below:";
@@ -166,7 +169,7 @@ void Menu::DisplayMenu(){
 
 
 /**
- * Create user account and store user information in a the vector usersList of type userInfo.
+ * Creates users account and stores user information in a the vector usersList of type userInfo.
  * Check for password requirements.
  * Assign account number to user.
  * @param: None
@@ -211,8 +214,11 @@ void Menu::DisplayMenu(){
 
 
 /**
- * 
- * 
+ * Asks the user to enter the account number
+ * Asks the user to enter their password while the user has not exceeded attempts
+ * Checks if the account is found in the system with the account number and password the user enters
+ * @parm: None
+ * @return: void
  * */
 void NewAccount::AccountAccess(){
 
@@ -262,7 +268,14 @@ void NewAccount::AccountAccess(){
 };
  
 
-
+/**
+ * Displays options for user to edit their account
+ * Asks the user for input from the options displayed while the user does not exit the editor
+ * User enters what ever option they selected
+ * 
+ * @parm: None
+ * @return: void
+ * */
 void Account::EditAccount(){
 
     AccountAccess();
@@ -302,7 +315,14 @@ void Account::EditAccount(){
 }
 
 
-
+/**
+ * First, Checks if the user is stored in the system
+ * Then displays options as to what account they want to look at and gets the input from user
+ * Displays either the balance in the checking account and the balance in the
+ * savings account (depending on what option the user picks)
+ * @parm: None
+ * @return: void
+ * */
 void Account::CheckBalance(){
 
     AccountAccess();
@@ -326,7 +346,18 @@ void Account::CheckBalance(){
 }
 
 
-
+/**
+ * First, checks if the user is valid in the system
+ *  Then, displays the account information of the user 
+ * - First Name
+ * - Last name
+ * - Account Number
+ * - Account Password
+ * - Balance in their savings account
+ * - Balance in their checking account
+ * @parm: None
+ * @return: void
+ * */
 void Account::DisplayInformation() {
 
     AccountAccess();
@@ -341,7 +372,15 @@ void Account::DisplayInformation() {
 }
 
 
-
+/**
+ * First checks if the user is valid in the system
+ * If the user is valid, it will display what account the user wants to deposit in
+ * User inputs the option as to what account to deposit to
+ * User inputs the amount of money
+ * Adds the amount of money inputted to the current balance stored in the account they choose to select
+ * @parm: None
+ * @return: void
+ * */
 void Account::DepositFunds(){
 
     AccountAccess();
@@ -371,7 +410,15 @@ void Account::DepositFunds(){
 }
 
 
-
+/**
+ * First checks if the user is valid in the system
+ * If the user is valid, it will display what account the user wants to withdraw from
+ * User inputs the option as to what account to deposit to
+ * User inputs the amount of money
+ * subtracts the amount of money inputted from the current balance stored in the account they choose to select
+ * @parm: None
+ * @return: void
+ * */
 void Account::WithdrawFunds(){
 
     AccountAccess();
@@ -403,7 +450,13 @@ void Account::WithdrawFunds(){
 }
 
 
-
+/**
+ * First, checks if the user is stored in the system
+ * Will delete the account from the index stored in our array of structures for that
+ * account
+ * @parm: None
+ * @return: void
+ * */
 void Account::CloseAccount(){
 
     AccountAccess();
