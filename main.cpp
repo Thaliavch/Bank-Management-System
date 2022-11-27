@@ -129,7 +129,7 @@ void Menu::DisplayMenu(){
 
     cout << "Please enter a password of at least 8 digits: ";
     cin >> psw;
-    while(psw.length() < 8 || psw.length() > 50 ){
+    while(psw.length() < MIN_PASSWORD || psw.length() > MAX_PASSWORD ){
         cout << "The password must have at least 8 digits and no more than 50 digits \n Please try again: ";
         cin >> psw;
     }
