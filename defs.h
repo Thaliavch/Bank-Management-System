@@ -7,6 +7,7 @@
 
 // Constants declaration
 const int MIN_PASSWORD = 8;
+const int MAX_PASSWORD = 50;
 const long long int FIRST_ACCOUNT_NUMBER = 10000;
 const int MAX_PASSWORD_VERIFICATION_ATTEMPTS = 8;
 
