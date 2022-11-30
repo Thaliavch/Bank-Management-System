@@ -1,10 +1,22 @@
 #include "Account.h"
 
+/**
+ * Goes back to the main menu of the bank managment system
+ * Parm: None
+ * Return: Void
+ **/
 bool Account::Go_back() {
     return *go_to_menu_ptr;
 }
 
-
+/**
+ * Displays options for user to edit their account
+ * Asks the user for input from the options displayed while the user does not exit the editor
+ * User enters what ever option they selected
+ * 
+ * @parm: None
+ * @return: void
+ * */
 void Account::EditAccount() {
 
     if (*access_granted_ptr) {
@@ -48,7 +60,14 @@ void Account::EditAccount() {
 }
 
 
-
+/**
+ * First, Checks if the user is stored in the system
+ * Then displays options as to what account they want to look at and gets the input from user
+ * Displays either the balance in the checking account and the balance in the
+ * savings account (depending on what option the user picks)
+ * @parm: None
+ * @return: void
+ * */
 void Account::CheckBalance() {
 
     if (*access_granted_ptr) {
@@ -70,6 +89,20 @@ void Account::CheckBalance() {
 
 }
 
+
+/**
+ * First, checks if the user is valid in the system
+ *  Then, displays the account information of the user 
+ * - First Name
+ * - Last name
+ * - Account Number
+ * - Account Password
+ * - Email
+ * - Balance in their savings account
+ * - Balance in their checking account
+ * @parm: None
+ * @return: void
+ * */
 void Account::DisplayInformation() {
 
     if (*access_granted_ptr) {
@@ -83,6 +116,16 @@ void Account::DisplayInformation() {
     }
 }
 
+
+/**
+ * First checks if the user is valid in the system
+ * If the user is valid, it will display what account the user wants to deposit in
+ * User inputs the option as to what account to deposit to
+ * User inputs the amount of money
+ * Adds the amount of money inputted to the current balance stored in the account they choose to select
+ * @parm: None
+ * @return: void
+ * */
 void Account::DepositFunds() {
 
     if (*access_granted_ptr) {
@@ -110,6 +153,16 @@ void Account::DepositFunds() {
 
 }
 
+
+/**
+ * First checks if the user is valid in the system
+ * If the user is valid, it will display what account the user wants to withdraw from
+ * User inputs the option as to what account to deposit to
+ * User inputs the amount of money
+ * subtracts the amount of money inputted from the current balance stored in the account they choose to select
+ * @parm: None
+ * @return: void
+ * */
 void Account::WithdrawFunds() {
 
     if (*access_granted_ptr) {
@@ -139,6 +192,14 @@ void Account::WithdrawFunds() {
 
 }
 
+
+/**
+ * First, checks if the user is stored in the system
+ * Will delete the account from the index stored in our array of structures for that
+ * account
+ * @parm: None
+ * @return: void
+ * */
 void Account::CloseAccount() {
 
     if (access_granted) {
