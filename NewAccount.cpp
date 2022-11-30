@@ -13,7 +13,7 @@ int NewAccount::account_index = 0; // initialization of static variable account_
   * @parm: input the user enters for deposit amount and withdraw amount
   * @return: bool
   */
-bool ValidInput(int number){
+bool NewAccount:: ValidInput(int number){
 bool valid_input = true;
  try{
   throw(number);
