@@ -6,7 +6,25 @@
 using namespace std;
 
 int NewAccount::account_index = 0; // initialization of static variable account_index;
-
+// NEW ADDITION MADE BY ME
+/**
+  * Exception handling for when the user enters a incorrect ipnut (ex. a letter when it asks 
+  * for a number. Return whther the user inputs is valid or not.
+  * @parm: input the user enters for deposit amount and withdraw amount
+  * @return: bool
+  */
+bool ValidInput(int number){
+bool valid_input = true;
+ try{
+  throw(number);
+ }
+ catch(...){
+    cerr << "Not a valid input. Please try again. " << endl;
+    valid_input = false;
+ }
+ 
+ return valid_input;
+}
 
 /**
   * Create user account and store user information in a the vector usersList of type userInfo.
@@ -39,12 +57,18 @@ void NewAccount::CreateAccount() {
     }
     info.password = *psw_ptr;
     // End of password setting_____________________________________
-
+ 
+    // Get a valid input from the user to deposit and withdraw
+    do{
     cout << "Amount to deposit in checking account:        ";
     cin >> info.checking_funds;
-
+    
+    }while(!ValidInput(info.checking_funds));
+ 
+    do{
     cout << "Amount to deposit in savings account:         ";
     cin >> info.savings_funds;
+    }while(!ValidInput(info.checking_funds));
 
     cout << "\n**********************************************************",
         cout << "\nCongratulations! Your account has been successfully created";
