@@ -39,5 +39,6 @@ public:
     void CreateAccount();
     void AccountAccess();
     bool Log_in();
+    bool ValidInput(int number)
 
 }; 
