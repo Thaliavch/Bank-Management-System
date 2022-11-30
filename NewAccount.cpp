@@ -6,6 +6,8 @@
 using namespace std;
 
 int NewAccount::account_index = 0; // initialization of static variable account_index;
+
+
 /**
   * Create user account and store user information in a the vector usersList of type userInfo.
   * Check for password requirements.
@@ -53,6 +55,14 @@ void NewAccount::CreateAccount() {
 
 }
 
+
+/**
+ * Asks the user to enter the account number
+ * Asks the user to enter their password while the user has not exceeded attempts
+ * Checks if the account is found in the system with the account number and password the user enters
+ * @parm: None
+ * @return: void
+ * */
 void NewAccount::AccountAccess() {
 
     // Checking for valid account number
@@ -123,6 +133,12 @@ void NewAccount::AccountAccess() {
 
 };
 
+
+/**
+/ Checks if a new valid account has been created for the user
+/ @parm: None
+/ @return: void 
+**/
 bool NewAccount::Log_in() {
     return *access_granted_ptr;
 
