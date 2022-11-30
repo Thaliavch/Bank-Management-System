@@ -2,6 +2,12 @@
 #include <iostream>
 using namespace std;
 
+
+/**
+ * Displays the options for the user to select from in the main menu
+ * @param: None
+ * @return: void
+ **/
 Menu::Menu() {
     cout << "*********************************************";
     cout << "   BANK MANAGEMENT SYSTEM   ";
