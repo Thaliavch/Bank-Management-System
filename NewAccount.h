@@ -1,3 +1,4 @@
+#pragma once
 #include "Menu.h"
 #include <iostream>
 #include <vector>
@@ -33,12 +34,18 @@ protected:
         int savings_funds;
         int checking_funds;
     };
-    vector<userInfo>usersList;
+
+    vector<userInfo> * users_ptr = new vector<userInfo>;// Cretae a pointer to a vector of userInfo;
+
+    vector<userInfo>& users = *users_ptr; //Create a reference to the pointer (to perform easier operations)
+
 
 public:
     void CreateAccount();
     void AccountAccess();
     bool Log_in();
-   
+    bool ValidTransaction(int number);
 
-}; 
+
+};
+
