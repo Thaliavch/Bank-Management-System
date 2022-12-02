@@ -28,7 +28,7 @@ int main() {
     do {
         user.DisplayMenu0();
         cin >> userInput;
-        system("CLS");
+        //system("CLS");
 
         switch (userInput) {
         case 1:
@@ -68,15 +68,16 @@ int main() {
 
                         break;
                     case SignOut:
-                        cout << "Signing Out...";
+                        cout << "\t\t\t\t\tSigning Out...";
 
                         break;
+
                     default:
-                        cout << "Incorrect Input. Try Again.";
+                        cout << "\t\t\t\t\tIncorrect Input. Try Again.";
 
 
                     };
-                   
+
                 } while (userInput0 != 7);
 
             }
@@ -87,19 +88,19 @@ int main() {
 
             break;
         case 3:
-            cout << "Thank you!";
+            user.ClearAccounts();
+            cout << "\t\t\t\t\tThank you!";
 
             break;
         default:
 
-            cout << "Incorrect Input. Try Again.";
+            cout << "\t\t\t\t\tIncorrect Input. Try Again.";
 
         }
-        
+
 
     } while (userInput != 3);
 
 
     return 0;
 }
-
