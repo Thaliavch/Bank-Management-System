@@ -13,7 +13,7 @@ bool Account::Go_back() {
  * Displays options for user to edit their account
  * Asks the user for input from the options displayed while the user does not exit the editor
  * User enters what ever option they selected
- * 
+ *
  * @parm: None
  * @return: void
  * */
@@ -33,19 +33,19 @@ void Account::EditAccount() {
             switch (*input_ptr) {
             case 1:
                 cout << "\nEnter New Name: "; // add check to avoid repetition of account numbers later
-                cin >> usersList[*user_index_ptr].holder_name;
+                cin >> users[*user_index_ptr].holder_name;
                 break;
             case 2:
                 cout << "\nEnter New Last Name: "; // add check to avoid repetition of account numbers later
-                cin >> usersList[*user_index_ptr].holder_last_name;
+                cin >> users[*user_index_ptr].holder_last_name;
                 break;
             case 3:
                 cout << "\nEnter New Password      : ";
-                cin >> usersList[*user_index_ptr].password;
+                cin >> users[*user_index_ptr].password;
                 break;
             case 4:
                 cout << "\nEnter New E-mail        : ";
-                cin >> usersList[*user_index_ptr].e_mail;
+                cin >> users[*user_index_ptr].e_mail;
                 break;
             case 5:
                 cout << "\nExiting Editor...\n";
@@ -79,10 +79,10 @@ void Account::CheckBalance() {
 
         switch (*input_ptr) {
         case 1:
-            cout << "\nBalance: " << usersList[*user_index_ptr].checking_funds;
+            cout << "\nBalance: " << users[*user_index_ptr].checking_funds;
             break;
         case 2:
-            cout << "\nBalance: " << usersList[*user_index_ptr].savings_funds;
+            cout << "\nBalance: " << users[*user_index_ptr].savings_funds;
             break;
         }
     }
@@ -92,7 +92,7 @@ void Account::CheckBalance() {
 
 /**
  * First, checks if the user is valid in the system
- *  Then, displays the account information of the user 
+ *  Then, displays the account information of the user
  * - First Name
  * - Last name
  * - Account Number
@@ -106,12 +106,12 @@ void Account::CheckBalance() {
 void Account::DisplayInformation() {
 
     if (*access_granted_ptr) {
-        cout << "User:                     " << usersList[*user_index_ptr].holder_name << usersList[*user_index_ptr].holder_last_name << endl;
-        cout << "Account Number:           " << usersList[*user_index_ptr].account_number << endl;
-        cout << "Account E-mail:           " << usersList[*user_index_ptr].e_mail << endl;
-        cout << "Account Password:         " << usersList[*user_index_ptr].password << endl;
-        cout << "Savings Account Balance:  " << usersList[*user_index_ptr].savings_funds << endl;
-        cout << "Checking Account Balance: " << usersList[*user_index_ptr].checking_funds << endl;
+        cout << "User:                     " << users[*user_index_ptr].holder_name << users[*user_index_ptr].holder_last_name << endl;
+        cout << "Account Number:           " << users[*user_index_ptr].account_number << endl;
+        cout << "Account E-mail:           " << users[*user_index_ptr].e_mail << endl;
+        cout << "Account Password:         " << users[*user_index_ptr].password << endl;
+        cout << "Savings Account Balance:  " << users[*user_index_ptr].savings_funds << endl;
+        cout << "Checking Account Balance: " << users[*user_index_ptr].checking_funds << endl;
 
     }
 }
@@ -139,14 +139,14 @@ void Account::DepositFunds() {
         case 1:
             cout << "\nAmount: ";
             cin >> *input_ptr;
-            usersList[*user_index_ptr].checking_funds += *input_ptr;
-            cout << "\n**** New Balance: " << usersList[*user_index_ptr].checking_funds << " ****";
+            users[*user_index_ptr].checking_funds += *input_ptr;
+            cout << "\n**** New Balance: " << users[*user_index_ptr].checking_funds << " ****";
             break;
         case 2:
             cout << "\nAmount: ";
             cin >> *input_ptr;
-            usersList[*user_index_ptr].savings_funds += *input_ptr;
-            cout << "\n**** New Balance: " << usersList[*user_index_ptr].savings_funds << " ****";
+            users[*user_index_ptr].savings_funds += *input_ptr;
+            cout << "\n**** New Balance: " << users[*user_index_ptr].savings_funds << " ****";
             break;
         }
     }
@@ -176,15 +176,15 @@ void Account::WithdrawFunds() {
         case 1:
             cout << "\nAmount: ";
             cin >> *input_ptr;
-            usersList[*user_index_ptr].checking_funds -= *input_ptr;
-            cout << "\n**** New Balance: " << usersList[*user_index_ptr].checking_funds << " ****";
+            users[*user_index_ptr].checking_funds -= *input_ptr;
+            cout << "\n**** New Balance: " << users[*user_index_ptr].checking_funds << " ****";
 
             break;
         case 2:
             cout << "\nAmount: ";
             cin >> *input_ptr;
-            usersList[*user_index_ptr].savings_funds -= *input_ptr;
-            cout << "\n**** New Balance: " << usersList[*user_index_ptr].savings_funds << " ****";
+            users[*user_index_ptr].savings_funds -= *input_ptr;
+            cout << "\n**** New Balance: " << users[*user_index_ptr].savings_funds << " ****";
 
             break;
         }
@@ -205,10 +205,10 @@ void Account::CloseAccount() {
     if (access_granted) {
 
         vector<userInfo>::iterator it1;
-        it1 = usersList.begin() + user_index;
+        it1 = users.begin() + user_index;
 
 
-        usersList.erase(it1);
+        users.erase(it1);
 
         cout << "Your account has been closed. Redirecting you to the main menu" << endl;
 
@@ -216,4 +216,8 @@ void Account::CloseAccount() {
 
 
     }
+}
+
+void Account:: ClearAccounts() {
+    delete& users; 
 }
