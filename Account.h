@@ -1,3 +1,4 @@
+#pragma once
 #include "Menu.h"
 #include "NewAccount.h"
 
@@ -11,4 +12,5 @@ public:
     void DepositFunds();
     void WithdrawFunds();
     void CloseAccount();
+    void ClearAccounts();
 };
